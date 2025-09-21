@@ -1,0 +1,55 @@
+// Code your testbench here
+// or browse Examples
+`timescale 1ns/1ps
+
+module alu_tb;
+
+    // Testbench variables
+    reg [3:0] a, b;          // 4-bit input operands
+    reg [2:0] opcode;        // 3-bit opcode
+    wire [7:0] result;       // 8-bit result for multiplication
+    wire [3:0] quotient, remainder; // 4-bit quotient and remainder for division
+
+    // Instantiate the ALU
+    alu uut (
+        .a(a),
+        .b(b),
+        .opcode(opcode),
+        .result(result),
+        .quotient(quotient),
+        .remainder(remainder)
+    );
+
+    // Stimulus block
+    initial begin
+        // Test Case 1: Addition (5 + 3 = 8)
+        a = 4'b0101; b = 4'b0011; opcode = 3'b000; #10;
+      $display("addition of a,b is:%b",result);
+        // Test Case 2: Subtraction (6 - 3 = 3)
+        a = 4'b0110; b = 4'b0011; opcode = 3'b001; #10;
+      $display("substraction of a,b is:%b",result);
+       // Test Case 3: Multiplication (2 * 3 = 6)
+        a = 4'b0010; b = 4'b0011; opcode = 3'b010; #10;
+      $display("multiplication of a,b is:%b",result);
+        // Test Case 4: Division (6 / 3 = 2, remainder 0)
+        a = 4'b0110; b = 4'b0011; opcode = 3'b011; #10;
+      $display("division of a,b is:%b,remainder is:%b,quotient is :%b",result,remainder,quotient);
+        // Test Case 5: OR operation (1100 | 1010 = 1110)
+        a = 4'b1100; b = 4'b1010; opcode = 3'b100; #10;
+      $display("or operation of a,b is:%b",result);
+        // Test Case 6: AND operation (1100 & 1010 = 1000)
+        a = 4'b1100; b = 4'b1010; opcode = 3'b101; #10;
+      $display("and operation of a,b is:%b",result);
+        // Test Case 7: XOR operation (1100 ^ 1010 = 0110)
+        a = 4'b1100; b = 4'b1010; opcode = 3'b110; #10;
+      $display("XOR operation of a,b is:%b",result);
+        // Test Case 8: NOT operation (~1100)
+        a = 4'b1100; opcode = 3'b111; #10;
+      $display("not operation of a,b is:%b",result);
+        // Test Case 9: Division by zero (Handle case)
+        a = 4'b1001; b = 4'b0000; opcode = 3'b011; #10;
+      $display("division of a,b is:%b",result);
+        $finish;
+    end
+
+endmodule
