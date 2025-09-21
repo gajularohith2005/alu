@@ -1,0 +1,31 @@
+// Code your design here
+module alu (
+    input [3:0] a, b,     // 4-bit input operands
+    input [2:0] opcode,   // 3-bit opcode
+    output reg [7:0] result,  // 8-bit result for multiplication
+    output reg [3:0] quotient, remainder // 4-bit quotient and remainder for division
+);
+
+always @(a, b, opcode) begin
+    case (opcode)
+        3'b000: result = a + b;     // Addition
+        3'b001: result = a - b;     // Subtraction
+        3'b010: result = a * b;     // Multiplication (8-bit result)
+        3'b011: begin               // Division (Handle division by zero)
+            if (b != 0) begin
+                quotient = a / b;    // Quotient
+                remainder = a % b;   // Remainder
+            end else begin
+                quotient = 4'b0000;  // Default to 0 when division by zero
+                remainder = 4'b0000;
+            end
+        end
+        3'b100: result = a | b;  // Bitwise OR
+        3'b101: result = a & b;  // Bitwise AND
+        3'b110: result = a ^ b;  // Bitwise XOR
+        3'b111: result = ~a;     // Bitwise NOT (Unary operation on 'a')
+        default: result = 8'b00000000; // Default case
+    endcase
+end
+
+endmodule
